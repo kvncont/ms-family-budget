@@ -1,5 +1,5 @@
 {
-  "family": "${{ vars.TASK }}",
+  "family": "task-ms-family-budget",
   "executionRoleArn": "arn:aws:iam::786243266451:role/MsFamilyBudgetRole",
   "networkMode": "awsvpc",
   "cpu": "256",
@@ -20,5 +20,19 @@
         }
       ]
     }
-  ]
+  ],
+  "tags": [
+        {
+            "key": "App",
+            "value": "ms-family-budget"
+        },
+        {
+            "key": "ManagedBy",
+            "value": "gh-actions"
+        },
+        {
+            "key": "GitRepoURL",
+            "value": "https://github.com/kvncont/ms-family-budget-test"
+        }
+    ]
 }
