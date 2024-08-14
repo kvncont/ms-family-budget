@@ -9,7 +9,7 @@
     {
       "name": "ms-family-budget",
       "container-name": "ms-family-budget",
-      "image": "${{ vars.ECR_REPOSITORY_URL }}",
+      "image": "nginx:1.27.0",
       "essential": true,
       "memory": 512,
       "cpu": 256,
