@@ -1,8 +1,8 @@
 {
   "family": "task-ms-family-budget",
   "networkMode": "awsvpc",
-  "cpu": 256,
-  "memory": 512,
+  "cpu": "256",
+  "memory": "512",
   "requiresCompatibilities": ["FARGATE"],
   "containerDefinitions": [
     {
