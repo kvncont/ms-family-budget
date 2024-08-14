@@ -1,6 +1,7 @@
 {
   "family": "task-ms-family-budget",
   "executionRoleArn": "arn:aws:iam::786243266451:role/MsFamilyBudgetRole",
+  "taskRoleArn": "arn:aws:iam::786243266451:role/MsFamilyBudgetRole",
   "networkMode": "awsvpc",
   "cpu": "256",
   "memory": "512",
