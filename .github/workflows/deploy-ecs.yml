@@ -30,11 +30,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: JSON
+        run: |
+          echo '{"family": "${{ vars.ECS_TASK_DEFINITION }}","containerDefinitions": [{"name": "${{ github.event.repository.name }}","container-name": "${{ github.event.repository.name }}","image": "${{ vars.ECR_REPOSITORY_URL }}:${{ github.sha }}","essential": true,"memory": 512,"cpu": 256,"portMappings": [{"containerPort": "80","hostPort": "80"}]}]}' > task-def.json
+          cat task-def.json
+
       - name: Render Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition-arn: |
+          task-definition: |
             {
               "family": "${{ vars.ECS_TASK_DEFINITION }}",
               "containerDefinitions": [
