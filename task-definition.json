@@ -1,5 +1,5 @@
 {
-  "family": "task-ms-family-budget",
+  "family": "${{ vars.TASK }}",
   "executionRoleArn": "arn:aws:iam::786243266451:role/MsFamilyBudgetRole",
   "networkMode": "awsvpc",
   "cpu": "256",
