@@ -43,7 +43,7 @@ jobs:
           task-definition-family: ${{ vars.ECS_TASK_DEFINITION }}
           task-definition-arn: ${{ vars.AWS_ROLE_DEPLOY }}
           container-name: ${{ github.event.repository.name }}
-          image: nginx:1.27.0
+          image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget
 
       - name: Deploy to ECS Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
