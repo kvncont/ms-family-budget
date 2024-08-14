@@ -49,5 +49,5 @@ jobs:
         with:
           cluster: ${{ vars.ECS_CLUSTER }}
           service: ${{ vars.ECS_SERVICE }}
-          task-definition: ${{ steps.task-def.outputs.task-definition-arn }}
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
           wait-for-service-stability: true
