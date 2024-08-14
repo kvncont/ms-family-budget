@@ -41,6 +41,7 @@ jobs:
         with:
           task-definition: task-definition.json
           task-definition-family: ${{ vars.ECS_TASK_DEFINITION }}
+          task-definition-arn: ${{ vars.AWS_ROLE_DEPLOY }}
           container-name: ${{ github.event.repository.name }}
           image: ${{ vars.ECR_REPOSITORY_URL }}:${{ github.sha }}
 
