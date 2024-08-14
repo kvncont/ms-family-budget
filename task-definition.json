@@ -1,9 +1,9 @@
 {
-  "family": "${{ vars.ECS_TASK_DEFINITION }}",
+  "family": "ms-family-budget",
   "containerDefinitions": [
     {
-      "name": "${{ github.event.repository.name }}",
-      "container-name": "${{ github.event.repository.name }}",
+      "name": "ms-family-budget",
+      "container-name": "ms-family-budget",
       "image": "${{ vars.ECR_REPOSITORY_URL }}:${{ github.sha }}",
       "essential": true,
       "memory": 512,
