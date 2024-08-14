@@ -55,7 +55,7 @@ jobs:
               ]
             }
           # task-definition-family: ${{ vars.ECS_TASK_DEFINITION }}
-          # container-name: ${{ github.event.repository.name }}
+          container-name: ${{ github.event.repository.name }}
           # image: ${{ vars.ECR_REPOSITORY_URL }}:${{ github.sha }}
 
       - name: Deploy to ECS Service
