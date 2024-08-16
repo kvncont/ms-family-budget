@@ -45,17 +45,17 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Download task definition 
+      - name: Download current task definition 
         run: |
           aws ecs describe-task-definition \
           --task-definition ${{ vars.ECS_TASK_DEFINITION }} \
           --query taskDefinition > task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
 
-      - name: Upload task definition
-        uses: actions/upload-artifact@v4
-        with:
-          name: task-definition
-          path: task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
+      # - name: Upload task definition
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: task-definition
+      #     path: task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
 
       - name: Render Amazon ECS task definition
         id: task-def
@@ -66,6 +66,18 @@ jobs:
           task-definition-arn: ${{ vars.AWS_ROLE_DEPLOY }}
           container-name: ${{ github.event.repository.name }}
           image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget
+
+      - name: Download new task definition 
+        run: |
+          aws ecs describe-task-definition \
+          --task-definition ${{ vars.ECS_TASK_DEFINITION }} \
+          --query taskDefinition > task-definition-${{ vars.ECS_TASK_DEFINITION }}-new.json
+
+      - name: Upload task definition
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-definition
+          path: task-definition-**.json
 
       - name: Deploy to ECS Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
