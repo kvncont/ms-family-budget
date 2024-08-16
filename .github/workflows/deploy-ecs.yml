@@ -1,20 +1,20 @@
 name: Deploy to ECS
 
 on:
-  # workflow_dispatch:
-  #   inputs:
-  #     image-tag:
-  #       type: string
-  #       description: Image to deploy
-  #       required: true
-  #     environment:
-  #       type: choice
-  #       description: Which environment to run this on
-  #       required: true
-  #       default: development
-  #       options:
-  #         - development
-  #         - production
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        type: string
+        description: Image to deploy
+        required: true
+      environment:
+        type: choice
+        description: Which environment to run this on
+        required: true
+        default: development
+        options:
+          - development
+          - production
       
   workflow_run:
     workflows: ["Build and Push Image to ECR"]
@@ -28,6 +28,9 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment: production
+
+    env:
+      IMAGE_TAG: ${{ github.event.inputs.image-tag || github.sha }}
 
     steps:
       - name: Checkout code
@@ -51,11 +54,11 @@ jobs:
           --task-definition ${{ vars.ECS_TASK_DEFINITION }} \
           --query taskDefinition > task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
 
-      # - name: Upload task definition
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: task-definition
-      #     path: task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
+      - name: Download current task definition 
+        run: |
+          aws ecs describe-task-definition \
+          --task-definition ${{ vars.ECS_TASK_DEFINITION }} \
+          --query taskDefinition > task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
 
       - name: Render Amazon ECS task definition
         id: task-def
@@ -65,7 +68,7 @@ jobs:
           task-definition-family: ${{ vars.ECS_TASK_DEFINITION }}
           task-definition-arn: ${{ vars.AWS_ROLE_DEPLOY }}
           container-name: ${{ github.event.repository.name }}
-          image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget
+          image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget:$IMAGE_TAG
 
       - name: Deploy to ECS Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
