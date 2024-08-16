@@ -29,9 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
 
-    env:
-      IMAGE_TAG: ${{ github.event.inputs.image-tag || github.sha }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -63,12 +60,14 @@ jobs:
       - name: Render Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
+        env:
+          IMAGE_TAG: ${{ github.event.inputs.image-tag || github.sha }}
         with:
           task-definition: task-definition-${{ vars.ECS_TASK_DEFINITION }}.json
           task-definition-family: ${{ vars.ECS_TASK_DEFINITION }}
           task-definition-arn: ${{ vars.AWS_ROLE_DEPLOY }}
           container-name: ${{ github.event.repository.name }}
-          image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget:$IMAGE_TAG
+          image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget:${{ env.IMAGE_TAG }}
 
       - name: Deploy to ECS Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
