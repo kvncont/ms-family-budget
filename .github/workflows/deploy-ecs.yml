@@ -67,6 +67,14 @@ jobs:
           container-name: ${{ github.event.repository.name }}
           image: 786243266451.dkr.ecr.us-east-1.amazonaws.com/ecr-ms-family-budget
 
+      - name: Deploy to ECS Service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          cluster: ${{ vars.ECS_CLUSTER }}
+          service: ${{ vars.ECS_SERVICE }}
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          wait-for-service-stability: true
+
       - name: Download new task definition 
         run: |
           aws ecs describe-task-definition \
@@ -78,11 +86,3 @@ jobs:
         with:
           name: task-definition
           path: task-definition-**.json
-
-      - name: Deploy to ECS Service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          cluster: ${{ vars.ECS_CLUSTER }}
-          service: ${{ vars.ECS_SERVICE }}
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          wait-for-service-stability: true
